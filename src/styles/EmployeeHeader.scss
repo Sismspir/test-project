@@ -1,0 +1,15 @@
+.header-style {
+    font-size: xx-large;
+    outline: none;
+    color: #221e1c;
+    text-shadow: #d3d4d4 1px 1px 2px, #1f3f6e 0px 0px 1px;
+}
+
+/* Remove MUI focus outline / focus ring */
+.MuiPaper-root:focus,
+.MuiPaper-root:focus-visible,
+.MuiTableRow-root:focus,
+.MuiTableRow-root:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
