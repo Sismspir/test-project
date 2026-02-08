@@ -1,19 +1,23 @@
 import { useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { setSearchTerm, setSelectedDepartment } from '../redux/slices/filtersSlice';
+import { useGetEmployees } from './useGetEmployees';
 import type { Employee } from '../types/employee';
 
-export const useEmployeeFilters = () => {
+export const useEmployeeFiltersWithReactQuery = () => {
   const dispatch = useAppDispatch();
-  const { employees, loading, error } = useAppSelector((state) => state.employees);
+  const { data: employees, isLoading: loading, error } = useGetEmployees();
   const { searchTerm, selectedDepartment } = useAppSelector((state) => state.filters);
-
+  
+  // Departments are calculated only when employees change
   const departments = useMemo(() => {
     if (!employees) return [];
     const uniqueDepartments = [...new Set(employees.map((emp: Employee) => emp.department))];
+    uniqueDepartments.push("All")
     return uniqueDepartments.sort();
   }, [employees]);
 
+  // Rerender only when the search term, selected department, or employee data changes
   const filteredEmployees = useMemo(() => {
     if (!employees) return [];
 
@@ -22,7 +26,7 @@ export const useEmployeeFilters = () => {
         employee.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         employee.email.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesDepartment = selectedDepartment === '' ||
+      const matchesDepartment = selectedDepartment === '' || selectedDepartment === "All" ||
         employee.department === selectedDepartment;
 
       return matchesSearch && matchesDepartment;
@@ -48,7 +52,7 @@ export const useEmployeeFilters = () => {
   };
 
   return {
-    employees,
+    employees: employees || [],
     loading,
     error,
     searchTerm,

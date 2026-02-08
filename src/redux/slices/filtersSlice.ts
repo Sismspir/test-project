@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface FiltersState {
   searchTerm: string;
@@ -6,8 +7,8 @@ interface FiltersState {
 }
 
 const initialState: FiltersState = {
-  searchTerm: '',
-  selectedDepartment: '',
+  searchTerm: localStorage.getItem("searchTerm") || '',
+  selectedDepartment: localStorage.getItem("selectedDepartment") || '',
 };
 
 const filtersSlice = createSlice({
@@ -16,13 +17,17 @@ const filtersSlice = createSlice({
   reducers: {
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
+      localStorage.setItem("searchTerm", action.payload);
     },
     setSelectedDepartment: (state, action: PayloadAction<string>) => {
       state.selectedDepartment = action.payload;
+      localStorage.setItem("selectedDepartment", action.payload);
     },
     clearFilters: (state) => {
       state.searchTerm = '';
+      localStorage.setItem("searchTerm", '')
       state.selectedDepartment = '';
+      localStorage.setItem("selectedDepartment", '');
     },
   },
 });

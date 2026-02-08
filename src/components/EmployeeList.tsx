@@ -10,21 +10,16 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import '../styles/EmployeeList.scss';
-import { useEmployeeFilters } from '../hooks/useEmployeeFiltersRedux';
-import { useAppDispatch } from '../redux/hooks';
-import { fetchEmployees } from '../redux/slices/employeesSlice';
+import { useEmployeeFiltersWithReactQuery } from '../hooks/useEmployeeFiltersWithReactQuery';
 import { Loader } from './Loader';
 import { Error } from './Error';
 import { EmployeeFilters } from './EmployeeFilters';
 
 const EmployeeList = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const {
-    employees,
     loading,
     error,
     searchTerm,
@@ -37,13 +32,7 @@ const EmployeeList = () => {
     totalEmployees,
     hasActiveFilters,
     filterSummary,
-  } = useEmployeeFilters();
-
-  useEffect(() => {
-    if (employees.length === 0 && !loading) {
-      dispatch(fetchEmployees());
-    }
-  }, [dispatch, employees.length, loading]);
+  } = useEmployeeFiltersWithReactQuery();
 
   if (loading) {
     return (
@@ -52,9 +41,7 @@ const EmployeeList = () => {
   }
 
   if (error) {
-    return (
-        <Error error={new Error(error)}/>
-    );
+    return <Error error={error as Error} />;
   }
 
   return (

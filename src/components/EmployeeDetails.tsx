@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Card,
@@ -10,21 +9,21 @@ import {
   Paper,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useAppSelector } from '../redux/hooks';
+import { useGetEmployees } from '../hooks/useGetEmployees';
 import { Loader } from './Loader';
 import { Error } from './Error';
 
-const EmployeeDetails: React.FC = () => {
+const EmployeeDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { employees, loading, error } = useAppSelector((state) => state.employees);
+  const { data: employees, isLoading: loading, error } = useGetEmployees();
 
   if (loading) {
     return <Loader />;
   }
 
   if (error) {
-    return <Error error={new Error(error)} />;
+    return <Error error={error as Error} />;
   }
 
   const employee = employees?.find(emp => emp.id === id);
@@ -40,7 +39,7 @@ const EmployeeDetails: React.FC = () => {
             startIcon={<ArrowBackIcon />}
             onClick={() => navigate('/')}
             sx={{ mt: 2 }}
-            color="secondary"
+            color="primary"
           >
             Back to Employee List1
           </Button>
@@ -68,7 +67,7 @@ const EmployeeDetails: React.FC = () => {
 
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="h6" color="primary" gutterBottom>
+              <Typography variant="h6" color="#286e97" gutterBottom>
                 Contact Information
               </Typography>
               <Typography variant="body1" sx={{ mb: 1 }}>
@@ -77,7 +76,7 @@ const EmployeeDetails: React.FC = () => {
             </Box>
 
             <Box sx={{ flex: 1 }}>
-              <Typography variant="h6" color="primary" gutterBottom>
+              <Typography variant="h6" color="#286e97" gutterBottom>
                 Employment Details
               </Typography>
               <Box sx={{ mb: 2 }}>
@@ -100,7 +99,7 @@ const EmployeeDetails: React.FC = () => {
           </Box>
 
           <Box>
-            <Typography variant="h6" color="primary" gutterBottom>
+            <Typography variant="h6" color="#286e97" gutterBottom>
               Additional Notes
             </Typography>
             <Paper sx={{ p: 2, backgroundColor: '#f8f9fa' }}>
