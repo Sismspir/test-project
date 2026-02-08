@@ -6,9 +6,29 @@ interface FiltersState {
   selectedDepartment: string;
 }
 
+// Helper function to safely access localStorage
+const getFromStorage = (key: string): string => {
+  try {
+    return typeof localStorage !== 'undefined' ? localStorage.getItem(key) || '' : '';
+  } catch {
+    return '';
+  }
+};
+
+// Helper function to safely set localStorage
+const setToStorage = (key: string, value: string): void => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(key, value);
+    }
+  } catch {
+    // Ignore errors in test environments or when localStorage is not available
+  }
+};
+
 const initialState: FiltersState = {
-  searchTerm: localStorage.getItem("searchTerm") || '',
-  selectedDepartment: localStorage.getItem("selectedDepartment") || '',
+  searchTerm: getFromStorage("searchTerm"),
+  selectedDepartment: getFromStorage("selectedDepartment"),
 };
 
 const filtersSlice = createSlice({
@@ -17,17 +37,17 @@ const filtersSlice = createSlice({
   reducers: {
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
-      localStorage.setItem("searchTerm", action.payload);
+      setToStorage("searchTerm", action.payload);
     },
     setSelectedDepartment: (state, action: PayloadAction<string>) => {
       state.selectedDepartment = action.payload;
-      localStorage.setItem("selectedDepartment", action.payload);
+      setToStorage("selectedDepartment", action.payload);
     },
     clearFilters: (state) => {
       state.searchTerm = '';
-      localStorage.setItem("searchTerm", '')
+      setToStorage("searchTerm", '')
       state.selectedDepartment = '';
-      localStorage.setItem("selectedDepartment", '');
+      setToStorage("selectedDepartment", '');
     },
   },
 });
