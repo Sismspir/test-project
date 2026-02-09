@@ -1,10 +1,6 @@
 import React from 'react';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-interface LoaderProps {
-  message?: string;
-}
-
 export const Loader: React.FC<LoaderProps> = ({ message = 'Loading...' }) => {
   return (
     <Box

@@ -7,14 +7,7 @@ import {
   MenuItem,
   Box,
 } from '@mui/material';
-
-interface EmployeeFiltersProps {
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
-  selectedDepartment: string;
-  onDepartmentChange: (value: string) => void;
-  departments: string[];
-}
+import { EmployeeFiltersProps } from '../types/employee';
 
 export const EmployeeFilters: React.FC<EmployeeFiltersProps> = ({
   searchTerm,
