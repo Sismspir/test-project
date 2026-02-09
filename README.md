@@ -2,7 +2,7 @@
 
 A modern React application for managing employee data with advanced filtering, search, and navigation capabilities.
 
-## ech Stack
+## Tech Stack
 
 - **Frontend**: React 18, TypeScript
 - **Build Tool**: Vite
